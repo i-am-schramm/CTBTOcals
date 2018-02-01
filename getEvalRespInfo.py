@@ -5,6 +5,7 @@
 import os
 from obspy import UTCDateTime
 from getStageGain import getStageGain
+from calcSinAmp import calcSinAmp
 
 
 date= UTCDateTime("2018,01,01,00,00,00")
@@ -19,3 +20,6 @@ print(stage1)
 print(stage2)
 print(stage3)
 
+calStart=UTCDateTime("2018,01,18,00,33,00")
+currentAmpOut = calcSinAmp('SFJD','IU','10','BHZ',calStart)
+print(currentAmpOut)

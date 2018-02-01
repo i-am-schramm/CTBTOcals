@@ -9,14 +9,12 @@ and return the amplitude'''
 
 from obspy import read, UTCDateTime
 
-#fileName = '/tr1/telemetry_days/IU_SFJD/2018/2018_018/10_BH2.512.seed'
-fileName = '/msd/IU_FURI/2015/281/_BC1.512.seed'
-#calStart=UTCDateTime("2018,018,00,33,00")
-calStart=UTCDateTime("2015,281,09,37,00")
-print(calStart)
+def calcSinAmp(station,network,channel,location,start):
+   fileName = ('/msd/'+network+'_'+station+'/'+str(start.year)+'/'+
+              str(start.julday).zfill(3)+'/'+channel+'_'+location+'.512.seed')
 
-st = read(fileName,starttime=calStart, endtime=calStart+600)
-st.plot()
-sinAmp=st[0].std()
+   st = read(fileName,starttime=start, endtime=start+600)
+   st.plot()
+   sinAmp=st[0].std()
 
-print(sinAmp)
+   return(sinAmp)
