@@ -65,3 +65,6 @@ except:
    oldCalAmpOut = calcSinAmp(fileName,date2)
 
 Ft1=oldAmpOut/oldCalAmpOut
+
+#Ft1 and Ft2 should be fairly close in value; the ratio should be ~1.
+S2=(Ft1/Ft2)*stage1
