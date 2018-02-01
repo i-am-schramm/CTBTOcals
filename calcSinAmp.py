@@ -9,10 +9,7 @@ and return the amplitude'''
 
 from obspy import read, UTCDateTime
 
-def calcSinAmp(station,network,channel,location,start):
-   fileName = ('/msd/'+network+'_'+station+'/'+str(start.year)+'/'+
-              str(start.julday).zfill(3)+'/'+channel+'_'+location+'.512.seed')
-
+def calcSinAmp(fileName,start):
    st = read(fileName,starttime=start, endtime=start+600)
    st.plot()
    sinAmp=st[0].std()
