@@ -6,12 +6,14 @@ import os
 from obspy import UTCDateTime
 from getStageGain import getStageGain
 from calcSinAmp import calcSinAmp
+import numpy as np
 
 station='SFJD'
 network='IU'
 location='10'
 channel='BHZ'
-calfreq=1
+calper=1.0
+calfreq=1.0/calper
 
 # get the current resp stage gains
 date=UTCDateTime("2018,01,18,00,33,00")
@@ -67,4 +69,15 @@ except:
 Ft1=oldAmpOut/oldCalAmpOut
 
 #Ft1 and Ft2 should be fairly close in value; the ratio should be ~1.
+# need to check these numbers against the spreadsheet values... something isn't correct.
 S2=(Ft1/Ft2)*stage1
+
+print(S2)
+
+#now to get this into CTBTO calib formula.  This comes from a pdf presentation that is on the N-drive:
+# in Calibrations/CTBTO\ Requirements/Calibration_Procedures\ for\ communication\ with\ PTS.pdf
+# the formula is on slide 38/39.
+### something isn't coming out correctly here....
+Calib=calper/(S2*stage2*stage3*2.0*np.pi)
+#Calib=calper/(S2*1.688909e+06*1e-9*2.0*np.pi)
+print(Calib)
