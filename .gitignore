@@ -1,1 +1,3 @@
 *.BHZ
+
+__pycache__
