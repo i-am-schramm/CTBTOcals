@@ -3,6 +3,7 @@
 ''' this file will get the amplitude at the given frequency for a given station '''
 
 import os
+from obspy import UTCDateTime
 
 # this is from Dave Wilson - showing off his mad awk skillz
 # evalresp SFJD BHZ 2018 1 1 1 1 -stage 1 2 -u dis -f /APPS/metadata/RESPS/RESP.IU.SFJD.10.BHZ
@@ -20,14 +21,25 @@ import os
 
 #so we call from the command line...
 
-#get the stage one gain
-stage=[]
-os.system('evalresp SFJD BHZ 2018 1 1 1 1 -stage 1 2 -u dis -f /APPS/metadata/RESPS/RESP.IU.SFJD.10.BHZ')
-with open('AMP.IU.SFJD.10.BHZ') as f:
-   stage=f.read().split(' ')
-stage1=float(stage[1])*1e-9 # may as well convert to nm
-print(stage1)
+def getStageGain(station,network,channel,component,date,stage,freq):
+   gain=[]
+   string=('evalresp '+ station + ' ' + component +' '+str(date.year)+
+           ' '+str(date.month)+' '+str(date.day)+' '+str(freq)+' 1 -stage '+
+           str(stage)+' 2 -u dis -f /APPS/metadata/RESPS/RESP.'+network+'.'+
+           station+'.'+channel+'.'+component)
+   os.system(string)
+   filename='AMP.'+network+'.'+station+'.'+channel+'.'+component
+   print(filename)
+   with open(filename) as f:
+      gain=f.read().split(' ')
+   return(float(gain[1])*1e-9)
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+date= UTCDateTime("2018,01,01,00,00,00")
+stage=1
+stage1 = getStageGain('SFJD','IU','10','BHZ',date,stage,'1')
+
+print(stage1)
 os.system('evalresp SFJD BHZ 2018 1 1 1 1 -stage 2 2 -u dis -f /APPS/metadata/RESPS/RESP.IU.SFJD.10.BHZ')
 with open('AMP.IU.SFJD.10.BHZ') as f:
    stage=f.read().split(' ')
