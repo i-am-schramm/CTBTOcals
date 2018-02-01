@@ -32,5 +32,5 @@ def getStageGain(station,network,channel,component,date,stage,freq):
    print(filename)
    with open(filename) as f:
       gain=f.read().split(' ')
-   return(float(gain[1])*1e-9)
+   return(float(gain[1]))
 
