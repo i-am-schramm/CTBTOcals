@@ -25,8 +25,9 @@ def getStageGain(station,network,channel,component,date,stage,freq):
    gain=[]
    string=('evalresp '+ station + ' ' + component +' '+str(date.year)+
            ' '+str(date.month)+' '+str(date.day)+' '+str(freq)+' 1 -stage '+
-           str(stage)+' 2 -u dis -f /APPS/metadata/RESPS/RESP.'+network+'.'+
+           str(stage)+' -f /APPS/metadata/RESPS/RESP.'+network+'.'+
            station+'.'+channel+'.'+component)
+   print(string)
    os.system(string)
    filename='AMP.'+network+'.'+station+'.'+channel+'.'+component
    print(filename)

@@ -8,6 +8,7 @@ from getStageGain import getStageGain
 from calcSinAmp import calcSinAmp
 import numpy as np
 
+idebug=False
 station='SFJD'
 network='IU'
 location='10'
@@ -24,16 +25,16 @@ stage2 = getStageGain(station,network,location,channel,date,stage,calfreq)
 stage=3
 stage3 = getStageGain(station,network,location,channel,date,stage,calfreq)
 
-print(stage1)
-print(stage2)
-print(stage3)
+if(idebug):
+   print("STAGE 1 gain: "+str(stage1))
+   print("STAGE 2 gain: "+str(stage2))
+   print("STAGE 3 gain: "+str(stage3))
 
 # now get the amps from the sine calibrations
 # first the current year:
 fileName = ('/msd/'+network+'_'+station+'/'+str(date.year)+'/'+
               str(date.julday).zfill(3)+'/'+location+'_'+channel+'.512.seed')
 currentAmpOut = calcSinAmp(fileName,date)
-print(currentAmpOut)
 try:
 # since we have 2 different naming conventions, try the new way
    fileName = ('/msd/'+network+'_'+station+'/'+str(date.year)+'/'+
@@ -53,7 +54,6 @@ date2=UTCDateTime("2015,01,29,05,20,00")
 fileName = ('/msd/'+network+'_'+station+'/'+str(date2.year)+'/'+
               str(date2.julday).zfill(3)+'/'+location+'_'+channel+'.512.seed')
 oldAmpOut = calcSinAmp(fileName,date2)
-print(oldAmpOut)
 try:
 # since we have 2 different naming conventions, try the new way
    fileName = ('/msd/'+network+'_'+station+'/'+str(date2.year)+'/'+
@@ -72,12 +72,11 @@ Ft1=oldAmpOut/oldCalAmpOut
 # need to check these numbers against the spreadsheet values... something isn't correct.
 S2=(Ft1/Ft2)*stage1
 
-print(S2)
+if(idebug): print("This should be close to stage 1: "+str(S2))
 
 #now to get this into CTBTO calib formula.  This comes from a pdf presentation that is on the N-drive:
 # in Calibrations/CTBTO\ Requirements/Calibration_Procedures\ for\ communication\ with\ PTS.pdf
 # the formula is on slide 38/39.
 ### something isn't coming out correctly here....
-Calib=calper/(S2*stage2*stage3*2.0*np.pi)
-#Calib=calper/(S2*1.688909e+06*1e-9*2.0*np.pi)
+Calib=calper/(S2*stage2*stage3*2.0*np.pi*1e-9)
 print(Calib)
