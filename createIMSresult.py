@@ -19,6 +19,7 @@
 from obspy import UTCDateTime
 from calcNewCalib import calcNewCalib
 from formatIMSemail import formatIMSemail
+from checkSpec import checkSpec
 
 debug=False
 # all of this should become command line input. 
@@ -34,5 +35,11 @@ calib = calcNewCalib(station,network,channel,location,calper,date,date2)
 
 print(calib)
 
-formatIMSemail(station,date,calib,calper)
+#ncalib = getNcalib(station)
+ncalib = 0.0655
+
+yORn = checkSpec(calib,ncalib)
+
+# now create the email to send to CTBTO
+formatIMSemail(station,date,calib,calper,yORn)
 

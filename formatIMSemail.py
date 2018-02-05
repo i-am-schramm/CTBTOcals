@@ -16,7 +16,7 @@ from obspy import UTCDateTime
 # Kimberly Schramm
 ########################################################################
 
-def formatIMSemail(station,calDate,calib,calper):
+def formatIMSemail(station,calDate,calib,calper,yORn):
 
    calOutFile="CALIBRATE_RESULT_"+station+'_'+str(calDate.year)
    f=open(calOutFile,"w")
@@ -49,7 +49,7 @@ def formatIMSemail(station,calDate,calib,calper):
       f.write(staList.format(station))
       f.write(chaList.format(chan))
       f.write("CALIBRATE_RESULT\n")
-      f.write(spec.format("yes"))
+      f.write(spec.format(yORn))
       f.write(val.format(calib))
       f.write(per.format(calper))
       f.write("\n")
