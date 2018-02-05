@@ -3,10 +3,12 @@
 ''' when given a station and date it will produce the cal result email '''
 from obspy import UTCDateTime
 
-station='SFJD'
-calDate=UTCDateTime("2018,01,18,00,33,00")
-calib=6.284974E-02
-calper=1.0
+#station='SFJD'
+#calDate=UTCDateTime("2018,01,18,00,33,00")
+#calib=6.284974E-02
+#calper=1.0
+
+def calResultOut(staion,calDate,calib,calper)
 
 calOutFile="CALIBRATE_RESULT_"+station+'_'+str(calDate.year)
 f=open(calOutFile,"w")
