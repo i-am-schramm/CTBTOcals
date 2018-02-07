@@ -1,0 +1,40 @@
+To      : support@ctbto.org
+Subject : Report - OR - TSUM
+
+
+#Report type
+Outage request
+
+#Station code
+TSUM
+
+#Source
+Station - New Report
+
+#Site (optional for array stations)
+
+#Submitted by
+Kimberly Schramm
+
+#email (optional)
+kschramm@usgs.gov
+
+#Heading
+Scheduled Calibration Activities 2018
+
+#Start date of requested outage (UTC)
+2018/02/14
+
+#End date of requested outage (UTC) (optional)
+2018/02/16
+
+#Mission capable
+yes
+
+#Data quality
+Calibration signal
+
+#Equipment affected (including serial/version number)(optional)
+
+#Description: reason for outage
+Scheduled Calibration activity
