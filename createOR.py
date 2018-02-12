@@ -8,7 +8,7 @@ station="GNI"
 calDate=UTCDateTime("2018,02,19,00,00,00")
 calEndDate=calDate+(2*24*60*60)
 
-OR_file="Outage_Request_"+station
+OR_file="Outage_Request_"+station+"_"+str(calDate.year)
 f=open(OR_file,"w")
 
 subject="Subject : Report - OR - {}\n"

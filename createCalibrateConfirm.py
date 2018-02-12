@@ -3,16 +3,17 @@
 
 from obspy import UTCDateTime
 
-station='GNI'
+station='TSUM'
 channels=['BHN','BHE','BHZ']
 #channels=['BH1','BH2','BHZ']
-calDate=UTCDateTime("2018,02,19,15,00,00")
+calDate=UTCDateTime("2018,02,14,15,00,00")
+subject ="Subject: CALIBRATE_CONFIRM_{}\n"
 
 calConf_file="CALIBRATE_CONFIRM_"+station+"_"+str(calDate.year)
 f=open(calConf_file,'w')
 
 f.write("To        : calibration@ctbto.org\n")
-f.write("Subject : CALIBRATE_CONFIRM_TSUM\n")
+f.write(subject.format(station))
 f.write("\n")
 f.write("\n")
 
