@@ -3,6 +3,8 @@
 ''' fetch the resp paz for full-frequency response email '''
 
 from obspy.io.xseed import Parser
+from obspy.io.xseed.Parser import get_paz
+# do i need to import the obspy inventory reader?  what does austin do?
 from obspy import UTCDateTime
 
 station='SFJD'
@@ -22,14 +24,18 @@ respIn=Parser(respFile)
 inv = respIn.get_inventory()
 nslc=network+'.'+station+'.'+location+'.'+channel
 
+#print(inv.keys())
+#dict_keys(['channels', 'networks', 'stations'])
+#print(inv.values())
+#print(inv.items())
+
 for ch in inv['channels']:
     if(ch['channel_id']==nslc):
       print(ch['channel_id'])
-      print(ch.get_paz)
-
+#      print(Response(desc=ch['channel_id']))
 
 ####
-'''Traceback (most recent call last):
-  File "getPAZinfo.py", line 28, in <module>
-    print(ch.get_paz)
-AttributeError: 'dict' object has no attribute 'get_paz''''
+#'''Traceback (most recent call last):
+#  File "getPAZinfo.py", line 28, in <module>
+#    print(ch.get_paz)
+##AttributeError: 'dict' object has no attribute 'get_paz''''
