@@ -3,8 +3,9 @@
 ''' fetch the resp paz for full-frequency response email '''
 
 from obspy.io.xseed import Parser
-from obspy.io.xseed.Parser import get_paz
-# do i need to import the obspy inventory reader?  what does austin do?
+from obspy.core.inventory.response import Response
+from obspy.core.inventory import read_inventory
+# do i need to import the obspy inventory reader?  what does austin do? he has his own resp utils
 from obspy import UTCDateTime
 
 station='SFJD'
@@ -32,7 +33,9 @@ nslc=network+'.'+station+'.'+location+'.'+channel
 for ch in inv['channels']:
     if(ch['channel_id']==nslc):
       print(ch['channel_id'])
-#      print(Response(desc=ch['channel_id']))
+      print(Response(desc=ch['channel_id']))
+      #print(ch.get_paz)
+
 
 ####
 #'''Traceback (most recent call last):
