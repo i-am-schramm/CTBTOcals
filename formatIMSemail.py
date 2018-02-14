@@ -52,6 +52,7 @@ def formatIMSemail(station,calDate,calib,calper,yORn):
       f.write(spec.format(yORn))
       f.write(val.format(calib))
       f.write(per.format(calper))
+      f.write("DATA_TYPE RESPONSE IMS2.0")
       f.write("\n")
    
    f.write("STOP")
