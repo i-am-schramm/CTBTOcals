@@ -2,43 +2,43 @@
 
 ''' fetch the resp paz for full-frequency response email '''
 
-from obspy.io.xseed import Parser
-from obspy.core.inventory.response import Response
 from obspy.core.inventory import read_inventory
-# do i need to import the obspy inventory reader?  what does austin do? he has his own resp utils
 from obspy import UTCDateTime
+
+def timeInRange(start,end,time):
+   if start <= end:
+      return(start <= time <= end)
+   else:
+      return(start <= time or time <= end)
+
+
+def getPAZinfo(station,network,channel,location,calDate):
+   
+   # must have 1.1.0 of obspy for this to work
+   respFile='/APPS/metadata/RESPS/RESP.'+network+'.'+station+'.'+location+'.'+channel
+   
+   # read in the resp file
+   respInfo=read_inventory(respFile,'RESP')
+   net=respInfo[0]
+   
+   for i in range(0,len(net.stations)):
+      sta=respInfo[0][i][0]
+      if(timeInRange(sta.start_date,sta.end_date,calDate)):
+        PAZ=sta.response.get_paz()
+
+   return(PAZ)
+       
+########################################################################   
+
 
 station='SFJD'
 network='IU'
 channel='BHZ'
 location='10'
+calDate=UTCDateTime("2017,01,17,00,00,00")
 
-# this has more than one volume index control header found and doesn't work
-#respFile="/dcc/metadata/dataless/DATALESS."+network+"_"+station+".seed"
-
-# this seems to work, but then you have to search for station.
-# it will also give warnings about more than one abbreviation control header found...
-respFile='/APPS/metadata/SEED/'+network+'.dataless'
-
-#create and inventory of the dataless resp info
-respIn=Parser(respFile)
-inv = respIn.get_inventory()
-nslc=network+'.'+station+'.'+location+'.'+channel
-
-#print(inv.keys())
-#dict_keys(['channels', 'networks', 'stations'])
-#print(inv.values())
-#print(inv.items())
-
-for ch in inv['channels']:
-    if(ch['channel_id']==nslc):
-      print(ch['channel_id'])
-      print(Response(desc=ch['channel_id']))
-      #print(ch.get_paz)
-
-
-####
-#'''Traceback (most recent call last):
-#  File "getPAZinfo.py", line 28, in <module>
-#    print(ch.get_paz)
-##AttributeError: 'dict' object has no attribute 'get_paz''''
+resp=getPAZinfo(station,network,channel,location,calDate)
+#print(dir(resp))
+poles=(resp.poles)
+zeros=(resp.zeros)
+print(poles,zeros)
