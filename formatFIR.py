@@ -15,13 +15,13 @@ def formatFIR(calOutFile,calDate,digType,firGain):
    f=open(calOutFile,"a")
    
    #fir2="FIR2 3  1.0067E+00 1    0.430    A 39"
-   fir2=("FIR2 3  %10.2e 1    0.430    A 39\n" % firGain)
+   fir2=("FIR2 3%10.2e   1    0.430    A 39\n" % firGain)
    f.write(fir2)
    
    firCoefs=getFIRinfo(digType)
    
    for i in range(0,len(firCoefs),5):
-      f.write(" %15.8e" % firCoefs[i])
+      f.write("%15.8e" % firCoefs[i])
       f.write(" %15.8e" % firCoefs[i+1])
       f.write(" %15.8e" % firCoefs[i+2])
       f.write(" %15.8e" % firCoefs[i+3])

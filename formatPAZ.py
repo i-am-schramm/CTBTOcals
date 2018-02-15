@@ -5,24 +5,22 @@
 from obspy import UTCDateTime
 from getPAZinfo import getPAZinfo
 
-station='SFJD'
-network='IU'
-channel='BHZ'
-location='10'
-calDate=UTCDateTime("2018,01,17,00,00,00")
+##station='SFJD'
+#network='IU'
+#channel='BHZ'
+#location='10'
+#calDate=UTCDateTime("2018,01,17,00,00,00")
 
-def formatPAZ(calOutFile,instType,digType,sens):
+def formatPAZ(station,network,channel,location,calDate,calOutFile,instType,digType,sens):
    #calOutFile="CALIBRATE_RESULT_"+station+'_'+str(calDate.year)
    f=open(calOutFile,"a")
-   instType='STS-2.5'
-   digType='Q330HR'
    #for the cal2 line, the intsrument can only have 5 chars
    
-   cal2="CAL2 {}  {}      {}  0.0628497       1.000   40.0000     {}\n"
+   #cal2=("CAL2 {}  {}      {} %15.8e       1.000   40.0000     {}\n"%calib)
    
-   PAZout=("PAZ2 01 V %15.8e  0    0.000    7   7   {} + {}\n" % sens)
+   PAZout=("PAZ2 01 V%15.8e  0    0.000    7   7   {} + {}\n" % sens)
    
-   f.write(cal2.format(station,channel,instType[0:5],calDate.strftime("%Y/%m/%d %H:%M")))
+   #f.write(cal2.format(station,channel,instType[0:5],calDate.strftime("%Y/%m/%d %H:%M")))
    f.write(PAZout.format(instType,digType[0:4]))
    resp=getPAZinfo(station,network,channel,location,calDate)
    #print(dir(resp))

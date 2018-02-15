@@ -26,6 +26,12 @@ def formatIMSemail(station,network,channel,location,calDate,calib,calper,yORn):
 
    ### get some gains so I don't keep passing sncl all the time
    freq=1.0
+   stage=0
+   #A0=getStageGain(station,network,channel,location,calDate,stage,freq)
+   #print(A0)
+
+   #A0=8.3187265E+17
+   A0=3.4684054E+17
    stage=1
    pazGain=getStageGain(station,network,channel,location,calDate,stage,freq)
    stage=2
@@ -39,6 +45,7 @@ def formatIMSemail(station,network,channel,location,calDate,calib,calper,yORn):
    msg_id="MSG_ID cal_{}_1_{}_cr\n" 
    ref_id="REF_ID cal_{}_1_{}_cs\n"
    timeStamp="TIME_STAMP {}\n"
+   cal2=("CAL2 {}  {}      {} %15.8e       1.000   40.0000     {}\n"%calib)
    
    f.write(subject.format(station))
    f.write("BEGIN IMS2.0\n")
@@ -50,7 +57,8 @@ def formatIMSemail(station,network,channel,location,calDate,calib,calper,yORn):
    
    ### this needs to be repeated for all 3 channels
    chanList=["BHZ", "BHE", "BHN"]
-   instType='STS-2.5'
+   #chanList=["BHZ", "BH1", "BH2"]
+   instType='STS-2'
    digType='Q330HR'
    print(chanList)
    for chan in chanList:
@@ -67,9 +75,10 @@ def formatIMSemail(station,network,channel,location,calDate,calib,calper,yORn):
       f.write(val.format(calib))
       f.write(per.format(calper))
       f.write("DATA_TYPE RESPONSE IMS2.0\n")
+      f.write(cal2.format(station,channel,instType[0:5],calDate.strftime("%Y/%m/%d %H:%M")))
       # need to call the PAZ, dig2, fir2 here
       f.close()
-      formatPAZ(calOutFile,instType,digType,pazGain)
+      formatPAZ(station,network,channel,location,calDate,calOutFile,instType,digType,pazGain)
       formatDIG(calOutFile,digType,digGain)
       formatFIR(calOutFile,calDate,digType,firGain)
       f=open(calOutFile,"a")

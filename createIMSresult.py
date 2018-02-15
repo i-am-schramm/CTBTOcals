@@ -20,23 +20,36 @@ from obspy import UTCDateTime
 from calcNewCalib import calcNewCalib
 from formatIMSemail import formatIMSemail
 from checkSpec import checkSpec
+from getNcalib import getNcalib
 
 debug=False
 # all of this should become command line input. 
-station='SFJD'
+station='TSUM'
 network='IU'
 location='10'
 channel='BHZ'
 calper=1.0
-date=UTCDateTime("2018,01,18,00,33,00")
-date2=UTCDateTime("2015,01,29,05,20,00")
+#SFJDDates
+#date=UTCDateTime("2018,01,18,00,33,00")
+#date2=UTCDateTime("2015,01,29,05,20,00")
+#ANMOdates
+#date=UTCDateTime("2018,02,14,19,18,00")
+#date2=UTCDateTime("2017,01,04,07,50,00")
+#TSUMdates
+date=UTCDateTime("2018,02,14,19,29,00")
+date2=UTCDateTime("2017,07,22,05,23,00")
 
 calib = calcNewCalib(station,network,channel,location,calper,date,date2)
 
+print("CALIB values:")
 print(calib)
 
-#ncalib = getNcalib(station)
-ncalib = 0.0655
+ncalib = getNcalib(station,channel)
+print(ncalib)
+
+#SFJD:ncalib = 0.0655
+#ANMO:ncalib = 0.080598
+ncalib=0.004745597
 
 yORn = checkSpec(calib,ncalib)
 
