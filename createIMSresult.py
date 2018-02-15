@@ -41,5 +41,5 @@ ncalib = 0.0655
 yORn = checkSpec(calib,ncalib)
 
 # now create the email to send to CTBTO
-formatIMSemail(station,date,calib,calper,yORn)
+formatIMSemail(station,network,channel,location,date,calib,calper,yORn)
 

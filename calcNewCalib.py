@@ -23,7 +23,7 @@ def calcNewCalib(station,network,channel,location,calper,date,date2):
    stageGains=[]
    calfreq=1.0/calper
    for stage in range(1,4):
-      stageGains.append(getStageGain(station,network,location,channel,date,stage,calfreq))
+      stageGains.append(getStageGain(station,network,channel,location,date,stage,calfreq))
    
    if(idebug):
       print("STAGE 1 gain: "+str(stageGains[0]))

@@ -2,7 +2,10 @@
 
 ''' when given a station and date it will produce the cal result email '''
 from obspy import UTCDateTime
-
+from getStageGain import getStageGain
+from formatPAZ import formatPAZ
+from formatFIR import formatFIR
+from formatDIG import formatDIG
 ########################################################################
 # inputs:
 #   station=station name
@@ -16,10 +19,19 @@ from obspy import UTCDateTime
 # Kimberly Schramm
 ########################################################################
 
-def formatIMSemail(station,calDate,calib,calper,yORn):
+def formatIMSemail(station,network,channel,location,calDate,calib,calper,yORn):
 
    calOutFile="CALIBRATE_RESULT_"+station+'_'+str(calDate.year)
-   f=open(calOutFile,"w")
+   f=open(calOutFile,"a")
+
+   ### get some gains so I don't keep passing sncl all the time
+   freq=1.0
+   stage=1
+   pazGain=getStageGain(station,network,channel,location,calDate,stage,freq)
+   stage=2
+   digGain=getStageGain(station,network,channel,location,calDate,stage,freq)
+   stage=3
+   firGain=getStageGain(station,network,channel,location,calDate,stage,freq)
    
    ### this is the header info
    to="calibration@ctbto.org"
@@ -38,6 +50,8 @@ def formatIMSemail(station,calDate,calib,calper,yORn):
    
    ### this needs to be repeated for all 3 channels
    chanList=["BHZ", "BHE", "BHN"]
+   instType='STS-2.5'
+   digType='Q330HR'
    print(chanList)
    for chan in chanList:
       staList="STA_LIST {}\n"
@@ -52,7 +66,13 @@ def formatIMSemail(station,calDate,calib,calper,yORn):
       f.write(spec.format(yORn))
       f.write(val.format(calib))
       f.write(per.format(calper))
-      f.write("DATA_TYPE RESPONSE IMS2.0")
+      f.write("DATA_TYPE RESPONSE IMS2.0\n")
+      # need to call the PAZ, dig2, fir2 here
+      f.close()
+      formatPAZ(calOutFile,instType,digType,pazGain)
+      formatDIG(calOutFile,digType,digGain)
+      formatFIR(calOutFile,calDate,digType,firGain)
+      f=open(calOutFile,"a")
       f.write("\n")
    
    f.write("STOP")

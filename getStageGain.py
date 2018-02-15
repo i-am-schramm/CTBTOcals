@@ -21,15 +21,15 @@ from obspy import UTCDateTime
 
 #so we call from the command line...
 
-def getStageGain(station,network,channel,component,date,stage,freq):
+def getStageGain(station,network,channel,location,date,stage,freq):
    gain=[]
-   string=('evalresp '+ station + ' ' + component +' '+str(date.year)+
+   string=('evalresp '+ station + ' ' + channel +' '+str(date.year)+
            ' '+str(date.month)+' '+str(date.day)+' '+str(freq)+' 1 -stage '+
            str(stage)+' -f /APPS/metadata/RESPS/RESP.'+network+'.'+
-           station+'.'+channel+'.'+component)
+           station+'.'+location+'.'+channel)
    print(string)
    os.system(string)
-   filename='AMP.'+network+'.'+station+'.'+channel+'.'+component
+   filename='AMP.'+network+'.'+station+'.'+location+'.'+channel
    print(filename)
    with open(filename) as f:
       gain=f.read().split(' ')
